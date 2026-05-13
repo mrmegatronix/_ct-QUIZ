@@ -2,10 +2,10 @@
  * Mother's Day Celebration - Configuration
  */
 
-window.MOM_CONFIG = {
+window.KING_CONFIG = {
     // ── EVENT IDENTITY ──────────────────────────────────────────────────
-    EVENT_NAME: "Mother's Day Celebration",
-    EVENT_SUBTITLE: "Celebrating the women who love us unconditionally",
+    EVENT_NAME: "King's Birthday Karaoke",
+    EVENT_SUBTITLE: "Long weekend celebration",
     
     // ── DATA SOURCES ────────────────────────────────────────────────────
     // Google Sheets CSV URL (must be 'Published to Web' as CSV)
@@ -16,17 +16,17 @@ window.MOM_CONFIG = {
     
     // ── VISUAL STYLING ──────────────────────────────────────────────────
     COLORS: {
-        primary: '#A81C2E',        // Rose Red
-        softPink: '#FFF0F5',
-        cream: '#FFFAF0',
-        textDark: '#4A0E0E',
-        glow: 'rgba(168, 28, 46, 0.4)'
+        primary: '#FFD700',        // Gold
+        softPink: '#1A1A2E',
+        cream: '#0F0F1A',
+        textDark: '#FFFFFF',
+        glow: 'rgba(255, 215, 0, 0.4)'
     },
     
     // ── ASSETS ──────────────────────────────────────────────────────────
     LOGO_PATH: 'coasters-logo.png',
     AVATAR_FALLBACK: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=2000',
-    CONFETTI_SYMBOLS: ['💐', '🌸', '🌺', '🌷', '🌹', '🌻'],
+    CONFETTI_SYMBOLS: ['👑', '🤴', '👸'],
     
     // ── FEATURES ────────────────────────────────────────────────────────
     VOICE_ENABLED_DEFAULT: false,
