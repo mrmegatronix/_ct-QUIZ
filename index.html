@@ -439,7 +439,8 @@
         <a href="../_ct-MATRIX/index.html" style="color:#999; text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">📺 Display</a>
         <a href="../_ct-MATRIX/masteradmin.html" style="color:#999; text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">🛠 Admin</a>
         <span style="color:#333">|</span>
-        <a href="index.html" style="color:var(--rose-red); text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">👑 KING</a>
+        <a href="index.html" style="color:var(--rose-red); text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">❓ QUIZ</a>
+        <a href="../_ct-KING/index.html" style="color:#999; text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">👑 KING</a>
         <a href="../_ct-MMR/index.html" style="color:#999; text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">🥩 MMR</a>
         <a href="../_ct-ACE/index.html" style="color:#999; text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">🃏 ACE</a>
         <a href="../_ct-WEA/index.html" style="color:#999; text-decoration:none; font-size:0.8rem; font-weight:700; text-transform:uppercase;">🌦 WEA</a>
@@ -605,7 +606,7 @@
                     return `
                         <div class="slide ${i === state.currentSlideIdx ? 'active' : ''} ${panClass}" style="${bgStyle}" data-duration="${duration}">
                             <div class="menu-sidebar">
-                                <div style="color: var(--rose-red); font-weight: 800; letter-spacing: 3px; font-size: 1.2rem;">KING'S BIRTHDAY</div>
+                                <div style="color: var(--rose-red); font-weight: 800; letter-spacing: 3px; font-size: 1.2rem;">WEEKLY QUIZ</div>
                                 <h1>${sanitize(title).replace(/\n/g, '<br>')}</h1>
                                 <div style="width: 60px; height: 4px; background: var(--rose-red); border-radius: 2px;"></div>
                                 ${subtitle ? `<h2>${sanitize(subtitle).replace(/\n/g, '<br>')}</h2>` : ''}
@@ -798,13 +799,13 @@
                 return false;
             };
 
-            if (localStorage.getItem('king_sync_locked') === 'true') {
-                console.log('[KING] Sync skipped: Local CMS locked.');
+            if (localStorage.getItem('quiz_sync_locked') === 'true') {
+                console.log('[QUIZ] Sync skipped: Local CMS locked.');
                 if (state.slides.length === 0) await loadLocal();
                 return;
             }
 
-            const url = window.KING_CONFIG.GSHEETS_URL;
+            const url = window.QUIZ_CONFIG.GSHEETS_URL;
             if(!url) return;
             
             try {
@@ -818,23 +819,23 @@
                     throw new Error("No data in sheet");
                 }
             } catch (e) {
-                console.error('[KING] Failed to fetch slides:', e);
+                console.error('[QUIZ] Failed to fetch slides:', e);
                 if (state.slides.length === 0) {
                     const success = await loadLocal();
                     if (!success) {
                         updateState({ slides: [{ 
-                                title: "Loading...", 
-                                subtitle: "Please wait.",
-                                cta: ""
+                                title: "Quiz will be starting soon", 
+                                subtitle: "while you are waiting, please take the time to scan the qr code to book your team in for next weeks quiz",
+                                type: "qr"
                             }] });
                     }
                 }
             }
         }
 
-        // --- Crown Confetti Logic (DOM-based, like MMR) ---
+        // --- Confetti Logic ---
         const confettiContainer = document.getElementById('confetti-container');
-        const crowns = ['👑', '🤴', '👸', '👑', '🤴', '👸', 'LOGO'];
+        const crowns = ['❓', '🤔', '💡', '🎓', 'LOGO'];
 
         function spawnAmbientConfetti() {
             const symbol = crowns[Math.floor(Math.random() * crowns.length)];
@@ -908,7 +909,7 @@
 
         // --- Init ---
         async function init() {
-            const cfg = window.KING_CONFIG;
+            const cfg = window.QUIZ_CONFIG;
             if (cfg) {
                 const root = document.documentElement;
                 if (cfg.COLORS.primary) root.style.setProperty('--cfg-primary', cfg.COLORS.primary);

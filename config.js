@@ -2,10 +2,10 @@
  * Mother's Day Celebration - Configuration
  */
 
-window.KING_CONFIG = {
+window.QUIZ_CONFIG = {
     // ── EVENT IDENTITY ──────────────────────────────────────────────────
-    EVENT_NAME: "King's Birthday Karaoke",
-    EVENT_SUBTITLE: "Long weekend celebration",
+    EVENT_NAME: "Weekly Pub Quiz",
+    EVENT_SUBTITLE: "Test your knowledge!",
     
     // ── DATA SOURCES ────────────────────────────────────────────────────
     // Google Sheets CSV URL (must be 'Published to Web' as CSV)
@@ -16,17 +16,17 @@ window.KING_CONFIG = {
     
     // ── VISUAL STYLING ──────────────────────────────────────────────────
     COLORS: {
-        primary: '#FFD700',        // Gold
-        softPink: '#1A1A2E',
-        cream: '#0F0F1A',
+        primary: '#3b82f6',        // Blue
+        softPink: '#1e293b',
+        cream: '#0f172a',
         textDark: '#FFFFFF',
-        glow: 'rgba(255, 215, 0, 0.4)'
+        glow: 'rgba(59, 130, 246, 0.4)'
     },
     
     // ── ASSETS ──────────────────────────────────────────────────────────
     LOGO_PATH: 'coasters-logo.png',
     AVATAR_FALLBACK: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80&w=2000',
-    CONFETTI_SYMBOLS: ['👑', '🤴', '👸'],
+    CONFETTI_SYMBOLS: ['❓', '🤔', '💡', '🎓'],
     
     // ── FEATURES ────────────────────────────────────────────────────────
     VOICE_ENABLED_DEFAULT: false,
