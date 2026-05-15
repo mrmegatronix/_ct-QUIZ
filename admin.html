@@ -319,6 +319,16 @@
         }
         @keyframes pipIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .pip-window iframe { width: 100%; height: 100%; border: none; }
+
+        /* Compact Mode */
+        body.compact { padding: 1rem; }
+        body.compact .admin-card { padding: 1.5rem; border-radius: 12px; }
+        body.compact h1 { font-size: 2rem; }
+        body.compact .subtitle { font-size: 0.8rem; margin-bottom: 1rem; }
+        body.compact .section { margin-bottom: 1rem; padding-bottom: 1rem; }
+        body.compact .btn { padding: 0.8rem; font-size: 0.8rem; }
+        body.compact .slide-list { max-height: 200px; }
+        body.compact .pip-toggle { display: none; }
     </style>
 </head>
 <body>
@@ -704,6 +714,9 @@
         }
 
         // Initial render
+        if (window.location.search.includes('compact=true')) {
+            document.body.classList.add('compact');
+        }
         const locked = localStorage.getItem('quiz_sync_locked') === 'true';
         document.getElementById('sync-lock-toggle').checked = locked;
         document.getElementById('sync-btn').disabled = locked;
