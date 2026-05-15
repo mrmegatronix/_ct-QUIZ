@@ -671,8 +671,9 @@
                             ${slide.type === 'qr' ? `
                                 <div class="qr-container">
                                     <div class="qr-frame">
-                                        <img src="https://quickchart.io/qr?size=800&margin=1&ecLevel=H&text=${encodeURIComponent(slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=yyyy-mm-dd&serviceids=event')}" alt="QR Code">
+                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=L&data=${encodeURIComponent(slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=' + getNextWednesday() + '&serviceids=event')}" alt="QR Code">
                                     </div>
+                                    <div class="countdown-timer slide-countdown-timer">${calculateTimeRemainingHTML()}</div>
                                 </div>
                             ` : ''}
                         </div>
@@ -685,7 +686,7 @@
             startSlideTimer(currentDur);
         }
 
-        // --- Countdown Logic ---
+        // --- Date Calculation ---
         function getNZDate() {
             const tz = 'Pacific/Auckland';
             const parts = new Intl.DateTimeFormat('en-US', {
@@ -699,14 +700,40 @@
             return new Date(v.year, v.month - 1, v.day, v.hour, v.minute, v.second);
         }
 
-        /* Countdown logic removed as it was for King's Birthday */
+        function getNextWednesday7PM() {
+            const nzDate = getNZDate();
+            let daysUntilNextWed = (3 + 7 - nzDate.getDay()) % 7;
+            if (daysUntilNextWed === 0 && nzDate.getHours() >= 19) {
+                daysUntilNextWed = 7;
+            }
+            nzDate.setDate(nzDate.getDate() + daysUntilNextWed);
+            const yr = nzDate.getFullYear();
+            const mo = String(nzDate.getMonth() + 1).padStart(2, '0');
+            const da = String(nzDate.getDate()).padStart(2, '0');
+            return `${yr}-${mo}-${da}T19:00`;
+        }
 
-        // --- Date Calculation ---
+        function calculateTimeRemainingHTML() {
+            const target = new Date(getNextWednesday7PM());
+            const nzNow = getNZDate();
+            const diff = target.getTime() - nzNow.getTime();
+            
+            if (diff <= 0 && diff > -10800000) return '<span>QUIZ IN PROGRESS</span>';
+            if (diff <= -10800000) return '<span>NEXT WEEK ENROLLING</span>';
+            
+            const hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+            const c = '<span class="blink-colon">:</span>';
+            
+            return `TIME UNTIL START ${hrs}${c}${String(m).padStart(2,'0')}${c}${String(s).padStart(2,'0')}`;
+        }
+
         function getNextWednesday() {
-            const d = new Date();
+            const d = getNZDate();
             let day = d.getDay();
             let daysUntilNextWed = (3 + 7 - day) % 7;
-            if (daysUntilNextWed === 0) daysUntilNextWed = 7;
+            if (daysUntilNextWed === 0 && d.getHours() >= 19) daysUntilNextWed = 7;
             d.setDate(d.getDate() + daysUntilNextWed);
             const yyyy = d.getFullYear();
             const mm = String(d.getMonth() + 1).padStart(2, '0');
@@ -718,13 +745,82 @@
         function loadStaticSlide() {
             const nextWed = getNextWednesday();
             updateState({ slides: [{ 
-                title: "Quiz will be starting soon", 
-                subtitle: "while you are waiting, please take the time to scan the qr code to book your team in for next weeks quiz",
+                title: "Weekly Pub Quiz", 
+                subtitle: "Every Wednesday at 7:00 PM. Scan to book your team for next week!",
                 qrUrl: `https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=${nextWed}&serviceids=event`,
                 backgroundImage: "quiz.png",
                 type: "qr"
             }] });
         }
+
+        function parseSlidesCSV(text) {
+            const result = [];
+            let row = [];
+            let col = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                const nextChar = text[i + 1];
+
+                if (inQuotes) {
+                    if (char === '"' && nextChar === '"') { col += '"'; i++; }
+                    else if (char === '"') { inQuotes = false; }
+                    else { col += char; }
+                } else {
+                    if (char === '"') { inQuotes = true; }
+                    else if (char === ',') { row.push(col.trim()); col = ''; }
+                    else if (char === '\n' || (char === '\r' && nextChar === '\n')) {
+                        if (char === '\r') i++;
+                        row.push(col.trim());
+                        result.push(row);
+                        row = []; col = '';
+                    } else { col += char; }
+                }
+            }
+            if (col || row.length > 0) { row.push(col.trim()); result.push(row); }
+
+            return result.slice(1).map(clean => {
+                const type = (clean[2] || 'normal').toLowerCase();
+                if (!clean[0] && type !== 'avatar') return null;
+
+                return {
+                    title: clean[0] || '',
+                    subtitle: clean[1] || '',
+                    type: type,
+                    duration: parseInt(clean[3]) || 30000,
+                    backgroundImage: clean[4] || '',
+                    overlayImage: clean[5] || '',
+                    qrUrl: clean[6] || '',
+                    bubbleText: clean[7] || '',
+                    winnerPhotos: clean[8] || ''
+                };
+            }).filter(s => s !== null);
+        }
+
+        async function fetchAndApplySlides() {
+            const url = (window.QUIZ_CONFIG && window.QUIZ_CONFIG.GSHEETS_URL) || '';
+            if (!url) return;
+            console.log('[QUIZ] Fetching slides from:', url);
+            try {
+                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const csv = await res.text();
+                let slides = parseSlidesCSV(csv);
+                if (slides.length > 0) {
+                    console.log('[QUIZ] Slides synced OK — ' + slides.length + ' slides loaded.');
+                    updateState({ slides: slides });
+                }
+            } catch (e) {
+                console.error('[QUIZ] Slides sync failed:', e);
+            }
+        }
+
+        setInterval(() => {
+            const timeHtml = calculateTimeRemainingHTML();
+            const timers = document.querySelectorAll('.slide-countdown-timer');
+            timers.forEach(t => t.innerHTML = timeHtml);
+        }, 1000);
 
         // --- Confetti Logic ---
         const confettiContainer = document.getElementById('confetti-container');
@@ -821,6 +917,8 @@
             resize();
 
             loadStaticSlide();
+            await fetchAndApplySlides();
+            setInterval(fetchAndApplySlides, (window.QUIZ_CONFIG && window.QUIZ_CONFIG.SYNC_INTERVAL_MS) || 300000);
         }
 
         init();
