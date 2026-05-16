@@ -22,18 +22,18 @@
             width: 100vw;
             height: 100vh;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Outfit', sans-serif;
             background-color: var(--cream);
             color: var(--text-dark);
+            font-family: 'Outfit', sans-serif;
         }
 
         #display-container {
             width: 1920px;
             height: 1080px;
-            position: relative;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             transform-origin: center center;
             overflow: hidden;
             background-color: var(--cream);
@@ -121,46 +121,24 @@
             background-position: center;
         }
 
-        /* Pan Down Effect */
-        .slide.pan-down {
-            background-size: 100% auto !important;
-            background-position: top center !important;
-            animation: panDownKING 45s linear forwards;
-        }
-
-        @keyframes panDownKING {
-            0% { background-position: top center; }
-            80% { background-position: bottom center; }
-            100% { background-position: bottom center; }
-        }
-
         .slide.active {
             opacity: 1;
         }
 
         .content {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 4rem;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--rose-red);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            max-width: 85%;
-            width: fit-content;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 100px 80px;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--rose-red);
+            box-shadow: 0 30px 100px rgba(0,0,0,0.8);
+            max-width: 1550px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-        }
-
-        .slide-overlay-img {
-            max-width: 70%;
-            max-height: 50vh;
-            object-fit: contain;
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
-            margin-bottom: 2rem;
-            border: 5px solid white;
+            z-index: 5;
         }
 
         /* Progress Bar */
@@ -176,187 +154,36 @@
         #progress-bar {
             height: 100%;
             width: 0%;
-            background: #ff4d94;
-            box-shadow: 0 0 15px rgba(255, 77, 148, 0.6);
+            background: var(--rose-red);
+            box-shadow: 0 0 15px var(--cfg-glow);
             transition: width 0.1s linear;
         }
 
-        /* Countdown Slide Styles */
-        .countdown-container {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-        }
-        .countdown-timer {
-            font-size: clamp(2.5rem, 6vmin, 5rem);
-            font-weight: 700;
-            color: var(--rose-red);
-            background: rgba(255, 255, 255, 0.4);
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            letter-spacing: 2px;
-            white-space: nowrap;
-        }
-        .blink-colon {
-            animation: blinker 1s linear infinite;
-            margin: 0 5px;
-        }
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
-        .countdown-label {
-            font-size: clamp(1rem, 2vmin, 2rem);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            opacity: 0.8;
-            font-weight: 700;
-            color: var(--rose-red);
-        }
+
 
         h1 {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            text-transform: uppercase;
             letter-spacing: -2px;
-            font-size: clamp(3rem, 6.5vw, 8rem);
-            margin: 0;
+            font-size: 120px;
+            margin: 40px 0 0 0;
             color: var(--rose-red);
-            line-height: 1.0;
-            text-shadow: 0 5px 25px rgba(168, 28, 46, 0.2);
-            white-space: nowrap;
+            line-height: 1.1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 40px var(--cfg-glow);
+            white-space: normal;
+            max-width: 1100px;
         }
-
+        
         h2 {
-            font-size: clamp(1.769rem, 3.538vw, 3.538rem);
-            font-weight: 700;
-            margin: 1.5rem 0;
-            color: var(--text-dark);
-            max-width: 90%;
+            font-size: 52px;
+            font-weight: 400;
+            margin: 40px 0;
+            color: rgba(255, 255, 255, 0.95);
+            max-width: 1200px;
             text-wrap: balance;
-            line-height: 1.2;
-            text-transform: uppercase;
-        }
-
-        .subtext {
-            font-size: 1.47rem;
-            line-height: 1.6;
-            margin: 1.5rem 0;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        /* Avatar styling */
-        .avatar-container {
-            margin-top: 1rem;
-            position: relative;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            max-height: 35vh;
-        }
-        .animated-avatar {
-            width: clamp(180px, 30vh, 280px);
-            height: clamp(180px, 30vh, 280px);
-            object-fit: contain;
-            border-radius: 50%;
-            border: 5px solid var(--rose-red);
-            box-shadow: 0 0 40px var(--cfg-glow), 0 0 80px rgba(0,0,0,0.1);
-            animation: floatKING 4s ease-in-out infinite;
-            background: rgba(255,255,255,0.4);
-            backdrop-filter: blur(10px);
-        }
-        @keyframes floatKING {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-        .speech-bubble {
-            position: absolute;
-            top: -60px;
-            right: -100px;
-            background: white;
-            color: var(--rose-red);
-            padding: 1rem 1.5rem;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 1.5rem;
-            text-shadow: 0 0 5px rgba(255,255,255,0.8);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            animation: float-bubbleKING 4s ease-in-out infinite;
-            z-index: 10;
-            border: 2px solid var(--rose-red);
-        }
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            bottom: -15px;
-            left: 30px;
-            border-width: 15px 15px 0 0;
-            border-style: solid;
-            border-color: white transparent transparent transparent;
-        }
-        @keyframes float-bubbleKING {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        /* Winners Carousel */
-        .winners-carousel {
-            position: relative;
-            z-index: 3;
-            width: 100%;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-        .winners-carousel img {
-            animation: winner-fadeKING 10s infinite;
-            opacity: 0;
-            position: absolute;
-            height: 380px;
-            width: auto;
-            object-fit: contain;
-            border-radius: 2rem;
-            border: 8px solid var(--rose-red);
-            box-shadow: 0 0 50px var(--cfg-glow);
-        }
-        @keyframes winner-fadeKING {
-            0%, 10% { opacity: 0; transform: scale(0.9); }
-            15%, 85% { opacity: 1; transform: scale(1); }
-            90%, 100% { opacity: 0; transform: scale(1.1); }
-        }
-
-        .highlight {
-            font-size: 1.71rem;
-            font-weight: 600;
-            color: var(--rose-red);
-            margin-top: 2rem;
-        }
-
-        /* Logo Placeholder */
-        .logo-seal {
-            position: absolute;
-            bottom: 3rem;
-            right: 3rem;
-            width: 120px;
-            height: 120px;
-            border: 2px solid var(--text-dark);
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
+            line-height: 1.4;
+            text-transform: none;
             letter-spacing: 1px;
-            color: var(--text-dark);
-            background: rgba(255,255,255,0.8);
-            z-index: 20;
         }
         /* QR Code Styling */
         .qr-container {
@@ -388,46 +215,6 @@
         }
 
 
-        /* --- Menu Sidebar Layout --- */
-        .menu-sidebar {
-            position: absolute;
-            left: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 500px;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 3rem;
-            border-radius: 40px;
-            border: 1px solid var(--rose-red);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: left;
-            z-index: 20;
-        }
-
-        .menu-sidebar h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4.06rem;
-            color: var(--rose-red);
-            line-height: 1.1;
-        }
-
-        .menu-sidebar h2 {
-            font-size: 1.59rem;
-            color: var(--text-dark);
-            text-transform: none;
-            margin: 0;
-        }
-
-        .menu-sidebar .qr-frame img {
-            width: 150px;
-            height: 150px;
-        }
-
         /* Progress Bar */
         #progress-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 8px; background: rgba(0,0,0,0.3); z-index: 1000; }
         #progress-bar { width: 0%; height: 100%; background: var(--rose-red); box-shadow: 0 0 20px var(--rose-red); transition: width 0.05s linear; }
@@ -438,17 +225,43 @@
             z-index: 50; pointer-events: none; overflow: hidden; 
         }
         .ambient-confetti { position: absolute; z-index: 50; pointer-events: none; }
-        
-        /* Pink Tint Filter for Logos */
-        .pink-tint-white {
-            filter: drop-shadow(0 0 2px var(--rose-red)) brightness(0.8) sepia(1) hue-rotate(300deg) saturate(5);
+
+        /* Clock Styling */
+        #clock {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 60px;
+            font-weight: 800;
+            color: var(--rose-red);
+            text-shadow: 0 0 30px var(--cfg-glow);
+            z-index: 100;
+            font-family: 'Outfit', sans-serif;
+            background: rgba(0,0,0,0.6);
+            padding: 15px 35px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 3px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            animation: clock-glow 4s infinite alternate;
         }
+
+        @keyframes clock-glow {
+            from { text-shadow: 0 0 20px var(--cfg-glow); border-color: rgba(255, 215, 0, 0.2); transform: scale(1); }
+            to { text-shadow: 0 0 50px var(--cfg-glow); border-color: rgba(255, 215, 0, 0.6); transform: scale(1.02); }
+        }
+
+
+
+
     </style>
 
 </head>
 <body>
 
     <div id="display-container">
+        <div id="clock">00:00:00</div>
         <div class="quiz-bg"></div>
         <div class="quiz-bg-glow"></div>
 
@@ -484,33 +297,9 @@
         const slidesWrapper = document.getElementById('slides-wrapper');
         const progressBar = document.getElementById('progress-bar');
 
-        // --- Broadcast Channel setup ---
-        const bc = new BroadcastChannel('king_sync');
-        bc.onmessage = (event) => {
-            const data = event.data;
-            if (data.type === 'STATE_UPDATE') {
-                updateState(data.payload);
-            }
-            if (data.type === 'SLIDE_CMD') {
-                handleSlideCmd(data.payload.cmd);
-            }
-            if (data.type === 'CONFETTI') {
-                createConfettiBurst();
-            }
-        };
-
-        function handleSlideCmd(cmd) {
-            if (cmd === 'next') nextSlide();
-            if (cmd === 'prev') prevSlide();
-            if (cmd === 'toggle') toggleSlidePlay();
-        }
-
         function updateState(newState) {
             state = { ...state, ...newState };
-            if (newState.slides || newState.disabledSlides || newState.overrides) {
-                renderSlides();
-            }
-            localStorage.setItem('king_state', JSON.stringify(state));
+            renderSlides();
         }
 
         function toggleSlidePlay() {
@@ -580,96 +369,36 @@
         }
 
         function renderSlides() {
-            const visibleSlides = state.slides.filter(s => !(state.disabledSlides || []).includes(s.title));
+            const visibleSlides = state.slides;
             if (visibleSlides.length === 0) {
                 slidesWrapper.innerHTML = '';
                 return;
             }
 
-            // Fix bounds before rendering so the active class is properly applied
-            if (state.currentSlideIdx >= visibleSlides.length || state.currentSlideIdx < 0) {
-                state.currentSlideIdx = 0;
-            }
-
-            const overrides = state.overrides || {};
-
             slidesWrapper.innerHTML = visibleSlides.map((slide, i) => {
-                const ov = overrides[slide.title] || {};
-                const title = ov.title || slide.title || '';
-                const subtitle = ov.subtitle || slide.subtitle || '';
-                const duration = ov.duration || slide.duration || 30000;
-
+                const title = slide.title || '';
+                const subtitle = slide.subtitle || '';
+                const duration = slide.duration || 30000;
                 const bgImg = safeUrl(slide.backgroundImage);
-                const overlayImg = safeUrl(slide.overlayImage);
                 const bgStyle = bgImg ? `background-image: url('${bgImg}');` : '';
                 
-                // Auto-detect if we should pan (if it's a menu image or type is MENU)
-                const shouldPan = bgImg && (bgImg.toLowerCase().includes('menu') || slide.type === 'menu');
-                const panClass = shouldPan ? 'pan-down' : '';
-
-                if (shouldPan) {
-                    return `
-                        <div class="slide ${i === state.currentSlideIdx ? 'active' : ''} ${panClass}" style="${bgStyle}" data-duration="${duration}">
-                            <div class="menu-sidebar">
-                                <div style="color: var(--rose-red); font-weight: 800; letter-spacing: 3px; font-size: 1.2rem;">WEEKLY QUIZ</div>
-                                <h1>${sanitize(title).replace(/\n/g, '<br>')}</h1>
-                                <div style="width: 60px; height: 4px; background: var(--rose-red); border-radius: 2px;"></div>
-                                ${subtitle ? `<h2>${sanitize(subtitle).replace(/\n/g, '<br>')}</h2>` : ''}
-                                
-                                <div class="qr-container" style="align-items: flex-start; margin-top: 1rem;">
-                                    <div class="qr-frame">
-                                        <img src="https://quickchart.io/qr?size=800&margin=1&ecLevel=H&text=${encodeURIComponent(slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=yyyy-mm-dd&serviceids=event')}" alt="QR Code">
-                                    </div>
+                return `
+                    <div class="slide ${i === state.currentSlideIdx ? 'active' : ''}" style="${bgStyle}" data-duration="${duration}">
+                        <div class="content">
+                            ${title ? `<h1>${sanitize(title).replace(/\n/g, '<br>')}</h1>` : ''}
+                            ${subtitle ? `<h2>${sanitize(subtitle).replace(/\n/g, '<br>')}</h2>` : ''}
+                            
+                            <div class="qr-container" style="margin-top: 40px;">
+                                <div class="qr-frame" style="padding: 30px; border-radius: 30px; border-width: 5px;">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=L&data=${encodeURIComponent(slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=' + getNextWednesday() + '&serviceids=event')}" alt="QR Code" style="width: 350px; height: 350px;">
                                 </div>
                             </div>
-                        </div>
-                    `;
-                }
-
-                return `
-                    <div class="slide ${i === state.currentSlideIdx ? 'active' : ''} ${panClass}" style="${bgStyle}" data-duration="${duration}">
-                        ${bgImg ? '<div class="slide-image-overlay"></div>' : ''}
-                        <div class="content">
-                            ${overlayImg ? `<img src="${overlayImg}" class="slide-overlay-img">` : ''}
-                            ${title ? `<h1>${sanitize(title).replace(/\n/g, '<br>')}</h1>` : ''}
-                            ${subtitle && slide.type !== 'avatar' ? `<h2>${sanitize(subtitle).replace(/\n/g, '<br>')}</h2>` : ''}
-                            
-                            ${slide.type === 'countdown' ? `
-                                <div class="countdown-container">
-                                    <div class="countdown-timer slide-countdown-timer">00 DAYS LEFT UNTIL...</div>
-                                </div>
-                            ` : ''}
-
-                            ${slide.type === 'avatar' ? `
-                                <div class="avatar-container">
-                                    ${(slide.bubbleText || '').trim() ? `<div class="speech-bubble">${sanitize(slide.bubbleText).replace(/\n/g, '<br>')}</div>` : ''}
-                                    <img src="${overlayImg || 'coasters-logo.png'}" class="animated-avatar pink-tint-white">
-                                </div>
-                            ` : ''}
-
-                            ${slide.type === 'winners' ? `
-                                <div class="winners-carousel">
-                                    ${(slide.winnerPhotos || '').split(',').map(url => url.trim()).filter(url => url).map((url, idx) => `
-                                        <img src="${safeUrl(url)}" style="animation-delay: ${idx * 2}s;">
-                                    `).join('')}
-                                </div>
-                            ` : ''}
-
-                            ${slide.type === 'qr' ? `
-                                <div class="qr-container">
-                                    <div class="qr-frame">
-                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=L&data=${encodeURIComponent(slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=' + getNextWednesday() + '&serviceids=event')}" alt="QR Code">
-                                    </div>
-                                    <div class="countdown-timer slide-countdown-timer">${calculateTimeRemainingHTML()}</div>
-                                </div>
-                            ` : ''}
                         </div>
                     </div>
                 `;
             }).join('');
 
-            const currentOv = overrides[visibleSlides[state.currentSlideIdx]?.title] || {};
-            const currentDur = currentOv.duration || visibleSlides[state.currentSlideIdx]?.duration || 30000;
+            const currentDur = visibleSlides[state.currentSlideIdx]?.duration || 30000;
             startSlideTimer(currentDur);
         }
 
@@ -687,34 +416,7 @@
             return new Date(v.year, v.month - 1, v.day, v.hour, v.minute, v.second);
         }
 
-        function getNextWednesday7PM() {
-            const nzDate = getNZDate();
-            let daysUntilNextWed = (3 + 7 - nzDate.getDay()) % 7;
-            if (daysUntilNextWed === 0 && nzDate.getHours() >= 19) {
-                daysUntilNextWed = 7;
-            }
-            nzDate.setDate(nzDate.getDate() + daysUntilNextWed);
-            const yr = nzDate.getFullYear();
-            const mo = String(nzDate.getMonth() + 1).padStart(2, '0');
-            const da = String(nzDate.getDate()).padStart(2, '0');
-            return `${yr}-${mo}-${da}T19:00`;
-        }
 
-        function calculateTimeRemainingHTML() {
-            const target = new Date(getNextWednesday7PM());
-            const nzNow = getNZDate();
-            const diff = target.getTime() - nzNow.getTime();
-            
-            if (diff <= 0 && diff > -10800000) return '<span>QUIZ IN PROGRESS</span>';
-            if (diff <= -10800000) return '<span>NEXT WEEK ENROLLING</span>';
-            
-            const hrs = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / 1000 / 60) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            const c = '<span class="blink-colon">:</span>';
-            
-            return `TIME UNTIL START ${hrs}${c}${String(m).padStart(2,'0')}${c}${String(s).padStart(2,'0')}`;
-        }
 
         function getNextWednesday() {
             const d = getNZDate();
@@ -732,81 +434,22 @@
         function loadStaticSlide() {
             const nextWed = getNextWednesday();
             updateState({ slides: [{ 
-                title: "Weekly Pub Quiz", 
-                subtitle: "Every Wednesday at 7:00 PM. Scan to book your team for next week!",
+                title: "Quiz will be starting soon", 
+                subtitle: "while you are waiting, please take the time to scan the qr code to book your team in for next weeks quiz",
                 qrUrl: `https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=${nextWed}&serviceids=event`,
                 backgroundImage: "quiz.png",
                 type: "qr"
             }] });
         }
 
-        function parseSlidesCSV(text) {
-            const result = [];
-            let row = [];
-            let col = '';
-            let inQuotes = false;
 
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                const nextChar = text[i + 1];
-
-                if (inQuotes) {
-                    if (char === '"' && nextChar === '"') { col += '"'; i++; }
-                    else if (char === '"') { inQuotes = false; }
-                    else { col += char; }
-                } else {
-                    if (char === '"') { inQuotes = true; }
-                    else if (char === ',') { row.push(col.trim()); col = ''; }
-                    else if (char === '\n' || (char === '\r' && nextChar === '\n')) {
-                        if (char === '\r') i++;
-                        row.push(col.trim());
-                        result.push(row);
-                        row = []; col = '';
-                    } else { col += char; }
-                }
-            }
-            if (col || row.length > 0) { row.push(col.trim()); result.push(row); }
-
-            return result.slice(1).map(clean => {
-                const type = (clean[2] || 'normal').toLowerCase();
-                if (!clean[0] && type !== 'avatar') return null;
-
-                return {
-                    title: clean[0] || '',
-                    subtitle: clean[1] || '',
-                    type: type,
-                    duration: parseInt(clean[3]) || 30000,
-                    backgroundImage: clean[4] || '',
-                    overlayImage: clean[5] || '',
-                    qrUrl: clean[6] || '',
-                    bubbleText: clean[7] || '',
-                    winnerPhotos: clean[8] || ''
-                };
-            }).filter(s => s !== null);
-        }
-
-        async function fetchAndApplySlides() {
-            const url = (window.QUIZ_CONFIG && window.QUIZ_CONFIG.GSHEETS_URL) || '';
-            if (!url) return;
-            console.log('[QUIZ] Fetching slides from:', url);
-            try {
-                const res = await fetch(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' });
-                if (!res.ok) throw new Error('HTTP ' + res.status);
-                const csv = await res.text();
-                let slides = parseSlidesCSV(csv);
-                if (slides.length > 0) {
-                    console.log('[QUIZ] Slides synced OK — ' + slides.length + ' slides loaded.');
-                    updateState({ slides: slides });
-                }
-            } catch (e) {
-                console.error('[QUIZ] Slides sync failed:', e);
-            }
-        }
 
         setInterval(() => {
-            const timeHtml = calculateTimeRemainingHTML();
-            const timers = document.querySelectorAll('.slide-countdown-timer');
-            timers.forEach(t => t.innerHTML = timeHtml);
+            const now = getNZDate();
+            const clockEl = document.getElementById('clock');
+            if (clockEl) {
+                clockEl.innerText = now.toLocaleTimeString('en-NZ', { hour12: false });
+            }
         }, 1000);
 
         // --- Confetti Logic ---
@@ -898,14 +541,12 @@
             function resize() {
                 const container = document.getElementById('display-container');
                 const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-                container.style.transform = `scale(${scale})`;
+                container.style.transform = `translate(-50%, -50%) scale(${scale})`;
             }
             window.addEventListener('resize', resize);
             resize();
 
             loadStaticSlide();
-            await fetchAndApplySlides();
-            setInterval(fetchAndApplySlides, (window.QUIZ_CONFIG && window.QUIZ_CONFIG.SYNC_INTERVAL_MS) || 300000);
         }
 
         init();
