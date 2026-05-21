@@ -7,6 +7,7 @@
     <title>Weekly Pub Quiz - Coasters Tavern</title>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;600&family=Playfair+Display:wght@900&display=swap" rel="stylesheet">
     <script src="config.js"></script>
+    <script src="qrious.min.js"></script>
     <style>
         :root {
             --rose-red: var(--cfg-primary, #FFD700);
@@ -381,6 +382,7 @@
                 const duration = slide.duration || 30000;
                 const bgImg = safeUrl(slide.backgroundImage);
                 const bgStyle = bgImg ? `background-image: url('${bgImg}');` : '';
+                const qrUrl = slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=' + getNextWednesday() + '&serviceids=event';
                 
                 return `
                     <div class="slide ${i === state.currentSlideIdx ? 'active' : ''}" style="${bgStyle}" data-duration="${duration}">
@@ -390,13 +392,24 @@
                             
                             <div class="qr-container" style="margin-top: 40px;">
                                 <div class="qr-frame" style="padding: 30px; border-radius: 30px; border-width: 5px;">
-                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&ecc=L&data=${encodeURIComponent(slide.qrUrl || 'https://bookings.nowbookit.com/?accountid=d7034cd3-cfde-4556-a98c-ea943ec35ef4&venueid=13703&theme=light&colors=hex,000000&date=' + getNextWednesday() + '&serviceids=event')}" alt="QR Code" style="width: 350px; height: 350px;">
+                                    <img class="qr-code-img" data-url="${sanitize(qrUrl)}" alt="QR Code" style="width: 350px; height: 350px;">
                                 </div>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+
+            // Generate QR codes locally using QRious
+            slidesWrapper.querySelectorAll('.qr-code-img').forEach(imgEl => {
+                const qrUrl = imgEl.getAttribute('data-url');
+                new QRious({
+                    element: imgEl,
+                    value: qrUrl,
+                    size: 350,
+                    level: 'L'
+                });
+            });
 
             const currentDur = visibleSlides[state.currentSlideIdx]?.duration || 30000;
             startSlideTimer(currentDur);
@@ -418,11 +431,11 @@
 
 
 
-        function getNextWednesday() {
+         function getNextWednesday() {
             const d = getNZDate();
             let day = d.getDay();
             let daysUntilNextWed = (3 + 7 - day) % 7;
-            if (daysUntilNextWed === 0 && d.getHours() >= 19) daysUntilNextWed = 7;
+            if (daysUntilNextWed === 0) daysUntilNextWed = 7;
             d.setDate(d.getDate() + daysUntilNextWed);
             const yyyy = d.getFullYear();
             const mm = String(d.getMonth() + 1).padStart(2, '0');
